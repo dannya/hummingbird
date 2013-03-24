@@ -14,19 +14,18 @@ console.log("Dashboard listening on http://" + dashboard_address + ":" + dashboa
 
 
 // Setup tracker port listener...
-var tracking_port, tracking_address;
+var tracking_port = config.tracking_port;
+var tracking_address = (config.tracking_address || "0.0.0.0");
 
-if (typeof config.tracking_port != 'number') {
+if (typeof tracking_port != 'number') {
     // Tracker should listen on the same port as the dashboard
-    tracker.listen(dashboard_port, dashboard_address);
+    tracker.listen(dashboard);
 
 } else {
     // Tracker should listen on specified port
-    tracking_port = config.tracking_port;
-    tracking_address = (config.tracking_address || "0.0.0.0");
-
+    tracker.listen(dashboard);
     tracker.listen(tracking_port, tracking_address);
-    tracker.listenUdp((config.udp_port || tracking_port), (config.udp_address || tracking_address));
+    tracker.listenUdp(tracking_port, tracking_address);
 }
 
 console.log("Tracker listening on http://" + tracking_address + ":" + tracking_port + "/tracking_pixel.gif.");

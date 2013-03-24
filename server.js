@@ -6,32 +6,30 @@ var demo = require('./lib/demo');
 
 
 // Setup dashboard port listener
-var dashboard_port = config.dashboard_port;
-var dashboard_address = (config.dashboard_address || "*");
-
-dashboard.listen(dashboard_port, dashboard_address);
-console.log("Dashboard listening on http://" + dashboard_address + ":" + dashboard_port + ".");
+dashboard.listen(config.dashboard_port, config.dashboard_address);
+console.log("Dashboard listening on http://" + (config.dashboard_address || "*") + ":" + config.dashboard_port + ".");
 
 
 // Setup tracker port listener...
-var tracking_port = config.tracking_port;
-var tracking_address = (config.tracking_address || "0.0.0.0");
-
-if (typeof tracking_port != 'number') {
+if (typeof config.tracking_port != 'number') {
     // Tracker should listen on the same port as the dashboard
     tracker.listen(dashboard);
 
 } else {
     // Tracker should listen on specified port
-    tracker.listen(dashboard);
-    tracker.listen(tracking_port, tracking_address);
-    tracker.listenUdp(tracking_port, tracking_address);
+    tracker.listen(config.tracking_port, config.tracking_address);
 }
 
-console.log("Tracker listening on http://" + tracking_address + ":" + tracking_port + "/tracking_pixel.gif.");
+console.log("Tracker listening on http://" + (config.tracking_address || "*") + ":" + (config.tracking_port || config.dashboard_port) + "/tracking_pixel.gif.");
+
+
+// Setup UDP tracking?
+if ((typeof config.udp_tracking == 'boolean') && (config.udp_tracking === true)) {
+    tracker.listenUdp((config.udp_port || 8000), (config.udp_address || "0.0.0.0"));
+}
 
 
 // Run in demo mode?
 if (config.demo_mode) {
-  demo.run(tracker);
+    demo.run(tracker);
 }

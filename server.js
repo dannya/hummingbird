@@ -23,7 +23,7 @@ if (typeof config.tracking_port != 'number') {
 } else {
     // Tracker should listen on specified port
     tracking_port = config.tracking_port;
-    tracking_address = (config.tracking_address || "0.0.0.0");
+    tracking_address = (config.tracking_address || "*");
 
     tracker.listen(tracking_port, tracking_address);
     tracker.listenUdp((config.udp_port || tracking_port), (config.udp_address || tracking_address));

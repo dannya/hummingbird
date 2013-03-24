@@ -5,25 +5,34 @@ var tracker = require('./lib/tracker');
 var demo = require('./lib/demo');
 
 
-dashboard.listen(config.dashboard_port, config.dashboard_address);
-console.log("Dashboard listening on http://" + (config.dashboard_address || '*') + ":" + config.dashboard_port + ".");
+// Setup dashboard port listener
+var dashboard_port = config.dashboard_port;
+var dashboard_address = (config.dashboard_address || "*");
+
+dashboard.listen(dashboard_port, dashboard_address);
+console.log("Dashboard listening on http://" + dashboard_address + ":" + dashboard_port + ".");
 
 
-// Tracker should listen on the same port as the dashboard
-tracker.listen(dashboard);
-console.log("Tracker listening on http://" + (config.dashboard_address || '*') + ":" + config.dashboard_port + "/tracking_pixel.gif.");
+// Setup tracker port listener...
+var tracking_port, tracking_address;
+
+if (typeof config.tracking_port != 'number') {
+    // Tracker should listen on the same port as the dashboard
+    tracker.listen(dashboard_port, dashboard_address);
+
+} else {
+    // Tracker should listen on specified port
+    tracking_port = config.tracking_port;
+    tracking_address = (config.tracking_address || "0.0.0.0");
+
+    tracker.listen(tracking_port, tracking_address);
+    tracker.listenUdp(tracking_port, tracking_address);
+}
+
+console.log("Tracker listening on http://" + tracking_address + ":" + tracking_port + "/tracking_pixel.gif.");
 
 
-// If you want to have the tracking pixel listen on a different port
-// (for instance in order to password-protect your dashboard) you can
-// uncomment this
-//
-// tracker.listen(8000, "0.0.0.0");
-
-// UDP tracking
-//
-// tracker.listenUdp(8000, "0.0.0.0");
-
-if(config.demo_mode) {
+// Run in demo mode?
+if (config.demo_mode) {
   demo.run(tracker);
 }

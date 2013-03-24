@@ -1,18 +1,21 @@
 module.exports = config = {
   "name" : "Hummingbird",
 
-  "tracking_port" : 8000,
+  "demo_mode": true,
+
+  "enable_dashboard" : true,
   "dashboard_port" : 8080,
 
-  "mongo_host" : "localhost",
-  "mongo_port" : 27017,
+  // If you want to have the tracking pixel listen on a different port
+  // (for instance in order to password-protect your dashboard) you can
+  // specify the port to listen on (change from false to port number)
+  "tracking_port" : false,
 
   "udp_address" : "127.0.0.1",
   "udp_port" : 8000,
 
-  "enable_dashboard" : true,
-
-  "demo_mode": true,
+  "mongo_host" : "localhost",
+  "mongo_port" : 27017,
 
   "capistrano" : {
     "repository" :       "git://github.com/mnutt/hummingbird.git",

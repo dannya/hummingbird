@@ -1,8 +1,12 @@
-var sys = require('sys'),
-  arrays = require('../lib/arrays'),
-  mongo = require('mongodb');
+config = require('../config/config');
 
-var db = new mongo.Db('hummingbird', new mongo.Server('localhost', 27017, {}), {});
+var sys = require('sys'),
+    arrays = require('../lib/arrays'),
+    mongo = require('mongodb');
+
+var db = new mongo.Db('hummingbird',
+                      new mongo.Server((config.mongo_host || 'localhost'), (config.mongo_port || 27017), {}),
+                      {});
 
 db.open(function(p_db) {
   db.collection('visits', function(err, collection) {

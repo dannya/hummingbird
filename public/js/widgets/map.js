@@ -28,7 +28,7 @@ Hummingbird.Map = function(element, socket, options) {
 
   this.defaultZoom = $(window).height() > 760 ? 3 : 2;
 
-  var zoomFactor = Math.log(window.devicePixelRatio || 1) / Math.LN2;
+  var zoomFactor = Math.round(Math.log(window.devicePixelRatio || 1) / Math.LN2);
   if(zoomFactor > 0) {
     var doubleSize = "-2x";
   } else {
@@ -43,7 +43,7 @@ Hummingbird.Map = function(element, socket, options) {
     .add(this.po.interact());
 
   this.map.add(this.po.image()
-          .url(this.po.url("//movableink-hummingbird-tiles.s3.amazonaws.com/hummingbird-dark" + Math.round(doubleSize) + "/{Z}/{X}/{Y}.png"))
+          .url(this.po.url("//movableink-hummingbird-tiles.s3.amazonaws.com/hummingbird-dark" + doubleSize + "/{Z}/{X}/{Y}.png"))
           .zoom(function(z) { return z + zoomFactor; return 2; }));
 
   this.map.add(this.po.compass()

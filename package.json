@@ -3,7 +3,7 @@
   "description": "A node.js statistics server",
   "version": "0.2.0-17",
   "dependencies": {
-    "socket.io": "0.9.6",
+    "socket.io": "2.3.0",
     "node-static": "0.5.9",
     "geoip-no-city-leak": "0.4.9-1"
   },
